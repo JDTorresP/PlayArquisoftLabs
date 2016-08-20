@@ -1,87 +1,95 @@
-/**
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * $Id$ product.java
- * Universidad de los Andes (Bogotá - Colombia)
- * Departamento de Ingeniería de Sistemas y Computación
- * Licenciado bajo el esquema Academic Free License version 3.0
- *
- * Ejercicio: Muebles de los Alpes
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- */
 
 package models;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Clase que representa un product entity
- */
+import javax.persistence.*;
+import com.avaje.ebean.Model;
 
 @Entity
-public class ProductEntity extends Model {
+@Table(name = "productentity")
+public class ProductEntity extends Model{
 
-    //-----------------------------------------------------------
-    // Atributos
-    //-----------------------------------------------------------
+    public static Finder<Long,ProductEntity> FINDER = new Finder<>(ProductEntity.class);
 
-    /**
-     * Nombre del product
-     */
-    private String nombre;
+    @Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Product")
+    private Long id;
+    private String name;
+    private Integer stock;
+    private Float price;
+    private Boolean available;
 
-    //-----------------------------------------------------------
-    // Constructores
-    //-----------------------------------------------------------
-
-    /**
-     * Constructor de la clase (sin argumentos)
-     */
     public ProductEntity() {
+        this.id=null;
+        this.name ="NO NAME";
+        this.stock = -1;
+        this.price = -1.00f;
+        this.available = false;
     }
 
-    /**
-     * Constructor de la clase (con argumentos)
-     * @param nombre
-     */
-    public ProductEntity(String nombre) {
-        this.nombre = nombre;
+    public ProductEntity(Long id) {
+        this();
+        this.id = id;
     }
 
-    //-----------------------------------------------------------
-    // Getters & Setters
-    //-----------------------------------------------------------
-
-    /**
-     * Devuelve el nombre del product
-     * @return nombre Nombre del product
-     */
-    public String getNombre() {
-        return nombre;
+    public ProductEntity(Long id, String name, Integer stock, Float price, Boolean available) {
+        this.id = id;
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+        this.available = available;
     }
 
-    /**
-     * Modifica el nombre del product
-     * @param nombre Nuevo nombre del product
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public Long getId() {
+        return id;
     }
 
-    //-----------------------------------------------------------
-    // Métodos auxiliares
-    //-----------------------------------------------------------
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    /**
-     * Crea un objeto product apartir de un nodo Json
-     * @param j Nodo Json con atributos y valores de un objeto product
-     */
-    public static ProductEntity bind(JsonNode j) {
-        String nombre = j.findPath("nombre").asText();
-        ProductEntity prod = new ProductEntity(nombre);
-        return prod;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                ", available=" + available +
+                '}';
     }
 }
