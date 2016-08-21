@@ -1,12 +1,12 @@
-
 package models;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
 import javax.persistence.*;
-import javax.persistence.*;
-import com.avaje.ebean.Model;
 
+/**
+ * Created by jd.torres11 on 20/08/2016.
+ */
 @Entity
 @Table(name = "productentity")
 public class ProductEntity extends Model{
