@@ -15,3 +15,11 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # Product controller
 GET     /products                    controllers.ProductController.getProducts
 POST    /products                    controllers.ProductController.createProduct
+
+# Item controller
+GET     /items                       controllers.ItemController.getItems
+POST    /items                       controllers.ItemController.createItem
+
+# WishList controller
+GET     /wish                        controllers.WishListController.getWishList
+POST    /wish                       controllers.WishListController.createWishList
