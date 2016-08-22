@@ -37,4 +37,19 @@ public class ItemController extends Controller {
                 }
         );
     }
+    public CompletionStage<Result> deleteItem(){
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+        JsonNode nItem = request().body().asJson();
+        ItemEntity item = Json.fromJson( nItem , ItemEntity.class ) ;
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    item.delete();
+                    return item;
+                }
+        ).thenApply(
+                ItemEntity -> {
+                    return ok(Json.toJson(ItemEntity));
+                }
+        );
+    }
 }

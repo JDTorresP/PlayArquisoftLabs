@@ -38,4 +38,19 @@ public class WishListController extends Controller {
                 }
         );
     }
+    public CompletionStage<Result> deleteWishList(){
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+        JsonNode nItem = request().body().asJson();
+        WishListEntity wishList = Json.fromJson( nItem , WishListEntity.class ) ;
+        return CompletableFuture.supplyAsync(
+                ()->{
+                    wishList.delete();
+                    return wishList;
+                }
+        ).thenApply(
+                WishListEntity -> {
+                    return ok(Json.toJson(WishListEntity));
+                }
+        );
+    }
 }
