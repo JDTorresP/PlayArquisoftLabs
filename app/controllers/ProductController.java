@@ -23,6 +23,14 @@ public class ProductController extends Controller{
                 .thenApply(productEntities -> {return ok(toJson(productEntities));}
                 );
     }
+    public CompletionStage<Result> getProduct(Long idP) {
+        MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
+
+        return CompletableFuture.
+                supplyAsync(() -> { return ProductEntity.FINDER.byId(idP); } ,jdbcDispatcher)
+                .thenApply(productEntities -> {return ok(toJson(productEntities));}
+                );
+    }
 
     public CompletionStage<Result> createProduct(){
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
@@ -39,12 +47,13 @@ public class ProductController extends Controller{
                 }
         );
     }
-    public CompletionStage<Result> deleteProduct(){
+    public CompletionStage<Result> deleteProduct(Long idP){
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
-        JsonNode nProduct = request().body().asJson();
-        ProductEntity product = Json.fromJson( nProduct , ProductEntity.class ) ;
+
+
         return CompletableFuture.supplyAsync(
                 ()->{
+                    ProductEntity product = ProductEntity.FINDER.byId(idP);
                     product.delete();
                     return product;
                 }
@@ -54,14 +63,23 @@ public class ProductController extends Controller{
                 }
         );
     }
-    public CompletionStage<Result> updateProduct(){
+
+    public CompletionStage<Result> updateProduct( Long idP){
         MessageDispatcher jdbcDispatcher = AkkaDispatcher.jdbcDispatcher;
         JsonNode nProduct = request().body().asJson();
         ProductEntity product = Json.fromJson( nProduct , ProductEntity.class ) ;
+        ProductEntity antiguo = ProductEntity.FINDER.byId(idP);
         return CompletableFuture.supplyAsync(
                 ()->{
-                    product.update();
-                    return product;
+
+                    antiguo.setId(product.getId());
+                    antiguo.setName(product.getName());
+                    antiguo.setAvailable(product.getAvailable());
+                    antiguo.setPrice(product.getPrice());
+                    antiguo.setStock(product.getStock());
+                    antiguo.setDescription(product.getDescription());
+                    antiguo.update();
+                    return antiguo;
                 }
         ).thenApply(
                 productEntity -> {

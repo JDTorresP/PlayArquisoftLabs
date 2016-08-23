@@ -2,7 +2,10 @@ package models;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
+import scala.collection.immutable.Range;
+
 import javax.persistence.*;
+import java.math.BigInteger;
 
 /**
  * Created by jd.torres11 on 20/08/2016.
@@ -17,6 +20,7 @@ public class ProductEntity extends Model{
     @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "Product")
     private Long id;
     private String name;
+    private String description;
     private Integer stock;
     private Float price;
     private Boolean available;
@@ -34,12 +38,13 @@ public class ProductEntity extends Model{
         this.id = id;
     }
 
-    public ProductEntity(Long id, String name, Integer stock, Float price, Boolean available) {
+    public ProductEntity(Long id, String name, Integer stock, Float price, Boolean available,String description) {
         this.id = id;
         this.name = name;
         this.stock = stock;
         this.price = price;
         this.available = available;
+        this.description= description;
     }
 
     public Long getId() {
@@ -56,6 +61,14 @@ public class ProductEntity extends Model{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getStock() {
@@ -89,6 +102,7 @@ public class ProductEntity extends Model{
                 ", name='" + name + '\'' +
                 ", stock=" + stock +
                 ", price=" + price +
+                ", descripcion=" + description +
                 ", available=" + available +
                 '}';
     }

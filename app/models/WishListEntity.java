@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.*;
 import com.avaje.ebean.Model;
+
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -11,27 +13,25 @@ import java.util.List;
 @Table(name = "itemEntity")
 public class WishListEntity extends Model {
 
-    public static Finder<Long,ItemEntity> FINDER = new Finder<>(ItemEntity.class);
+    public static Finder<Long,WishListEntity> FINDER = new Finder<>(WishListEntity.class);
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "WishList")
     private Long id;
-    private List<Long> id_items;
-    private Float totalPrice;
+    private  String username;
 
     public WishListEntity() {
         this.id=null;
-        this.totalPrice = 0.0f;
-        this.id_items=null;
+        this.username="NO MAN";
     }
 
     public WishListEntity(Long id) {
         this();
         this.id = id;
     }
-    public WishListEntity(Long id, List<Long> id_items) {
+    public WishListEntity(Long id, String username) {
         this.id = id;
-        this.id_items=id_items;
+        this.username = username;
     }
 
     public Long getId() {
@@ -42,24 +42,19 @@ public class WishListEntity extends Model {
         this.id = id;
     }
 
-    public List<Long> getItems() { return id_items; }
-
-    public void setItem(ItemEntity item) {
-        this.id_items.add(item.getId()); totalPrice +=item.getPrice();
-    }
-    public void deleteItem(ItemEntity item) {
-        this.id_items.remove(item.getId()); totalPrice -=item.getPrice();
+    public String getUsername() {
+        return username;
     }
 
-    public Float getTotalPrice() {
-        return totalPrice;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
         return "ItemEntity{" +
                 "id=" + id +
-                ", id items=" + id_items.toString() +
+                "userrname=" + username +
                 '}';
     }
 }
